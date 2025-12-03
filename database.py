@@ -3,17 +3,17 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 from flask_login import UserMixin
 from sqlalchemy import inspect, text
+import os
 
 app = Flask(__name__)
 
 # Secret key for session management
 app.config['SECRET_KEY'] = 'your_secret_key_here'
 
-# Connect to SQL Server 2022 (Windows Authentication)
-app.config['SQLALCHEMY_DATABASE_URI'] = (
-    "mssql+pyodbc://@JANITH-PC\\SQLEXPRESS/AssetDB?"
-    "driver=ODBC+Driver+18+for+SQL+Server&trusted_connection=yes&Encrypt=no"
-)
+# ----------------- SQLite DATABASE -----------------
+basedir = os.path.abspath(os.path.dirname(__file__))
+db_path = os.path.join(basedir, 'assets_v2_1.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{db_path}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
